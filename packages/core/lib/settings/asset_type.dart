@@ -1,5 +1,5 @@
 import 'package:dartx/dartx.dart';
-import 'package:flutter_gen_core/utils/identifer.dart';
+import 'package:flutter_gen_core/utils/identifier.dart';
 import 'package:flutter_gen_core/utils/string.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' as p;
@@ -63,7 +63,7 @@ class AssetType {
 }
 
 /// Represents a AssetType with modifiers on it to mutate the [name] to ensure
-/// it is unique in a larger list and a valid dart identifer.
+/// it is unique in a larger list and a valid dart identifier.
 ///
 /// See [AssetTypeIterable.mapToUniqueAssetType] for the algorithm.
 class UniqueAssetType extends AssetType {
@@ -140,43 +140,48 @@ extension AssetTypeIterable on Iterable<AssetType> {
   ///
   /// Because the name change can cause it to clash with an existing name, the
   /// code is run iteratively until no collision are found. This can be a little
-  /// more expensive, but it simplier.
-  ///
+  /// more expensive, but it is simpler.
   Iterable<UniqueAssetType> mapToUniqueAssetType(
     String Function(String) style, {
     bool justBasename = false,
   }) {
-    List<UniqueAssetType> assets = map((e) => UniqueAssetType(
-          assetType: e,
-          style: style,
-          needExtension: false,
-          suffix: '',
-          basenameOnly: justBasename,
-        )).toList();
+    List<UniqueAssetType> assets = map(
+      (e) => UniqueAssetType(
+        assetType: e,
+        style: style,
+        needExtension: false,
+        suffix: '',
+        basenameOnly: justBasename,
+      ),
+    ).toList();
 
     while (true) {
       // Check if we have any name collisions.
-      final dups = assets.groupBy((e) => e.name).values;
+      final duplicates = assets.groupBy((e) => e.name).values;
 
       // No more duplicates, so we can bail.
-      if (dups.every((list) => list.length == 1)) break;
+      if (duplicates.every((list) => list.length == 1)) {
+        break;
+      }
 
       // Otherwise start to process the list and mutate the assets as needed.
-      assets = dups
+      assets = duplicates
           .map((list) {
-            assert(list.isNotEmpty,
-                'The groupBy list of assets should not be empty.');
+            assert(
+              list.isNotEmpty,
+              'The groupBy list of assets should not be empty.',
+            );
 
             // Check the first element in the list. Since we grouped by each
             // list element should have the same name.
             final name = list[0].name;
-            final isValidIdentifer = isValidVariableIdentifier(name);
+            final isValidIdentifier = isValidVariableIdentifier(name);
 
             // TODO(bramp): In future we should also check this name doesn't collide
             // with the integration's class name (e.g AssetGenImage).
 
-            // No colissions for this name, carry on.
-            if (list.length == 1 && isValidIdentifer) {
+            // No collisions for this name, carry on.
+            if (list.length == 1 && isValidIdentifier) {
               return list;
             }
 
@@ -192,9 +197,11 @@ extension AssetTypeIterable on Iterable<AssetType> {
             // Ok, we must resolve the conflicts by adding suffixes.
             String suffix = '';
             list.forEachIndexed((asset, index) {
-              // Shouldn't need to mutate the first item (unless it's an invalid
-              // identifer).
-              if (index == 0 && isValidIdentifer) return;
+              // Shouldn't need to mutate the first item
+              // (unless it's an invalid identifier).
+              if (index == 0 && isValidIdentifier) {
+                return;
+              }
 
               // Append a extra suffixes to each item so they hopefully become unique
               suffix = '${suffix}_';
@@ -207,8 +214,10 @@ extension AssetTypeIterable on Iterable<AssetType> {
           .toList();
     }
 
-    assert(assets.map((e) => e.name).distinct().length == assets.length,
-        'There are duplicate names in the asset list.');
+    assert(
+      assets.map((e) => e.name).distinct().length == assets.length,
+      'There are duplicate names in the asset list.',
+    );
 
     return assets;
   }

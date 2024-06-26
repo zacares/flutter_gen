@@ -1,4 +1,3 @@
-@TestOn('vm')
 import 'dart:io';
 
 import 'package:dart_style/dart_style.dart';
@@ -24,12 +23,20 @@ void main() {
         File('test_resources/pubspec_fonts_no_family.yaml'),
       );
       final formatter = DartFormatter(
-          pageWidth: config.pubspec.flutterGen.lineLength, lineEnding: '\n');
+        pageWidth: config.pubspec.flutterGen.lineLength,
+        lineEnding: '\n',
+      );
 
-      expect(() {
-        return generateFonts(formatter, config.pubspec.flutter.fonts,
-            config.pubspec.flutterGen.fonts);
-      }, throwsA(isA<InvalidSettingsException>()));
+      expect(
+        () {
+          return generateFonts(
+            formatter,
+            config.pubspec.flutter.fonts,
+            config.pubspec.flutterGen.fonts,
+          );
+        },
+        throwsA(isA<InvalidSettingsException>()),
+      );
     });
 
     test('Change the class name', () async {

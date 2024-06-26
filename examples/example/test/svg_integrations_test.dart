@@ -1,4 +1,3 @@
-@TestOn('vm')
 import 'package:example/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,16 +19,16 @@ class SvgIntegrationsTest extends StatelessWidget {
 
 void main() {
   group('Test SvgTheme behavior', () {
-    var testTheme = SvgTheme(currentColor: Colors.red);
+    final testTheme = const SvgTheme(currentColor: Colors.red);
 
     testWidgets('Passed theme should be null', (widgetTester) async {
       await widgetTester.pumpWidget(SvgIntegrationsTest(theme: testTheme));
 
-      var finder = find.byType(SvgPicture);
+      final finder = find.byType(SvgPicture);
       expect(finder, findsOneWidget);
 
-      var svgWidget = widgetTester.widget<SvgPicture>(finder);
-      var loader = svgWidget.bytesLoader as SvgAssetLoader;
+      final svgWidget = widgetTester.widget<SvgPicture>(finder);
+      final loader = svgWidget.bytesLoader as SvgAssetLoader;
 
       expect(loader.theme, isNull);
     });
@@ -39,13 +38,13 @@ void main() {
         (widgetTester) async {
       await widgetTester.pumpWidget(SvgIntegrationsTest(theme: testTheme));
 
-      var finder = find.byType(SvgPicture);
+      final finder = find.byType(SvgPicture);
       expect(finder, findsOneWidget);
 
-      var svgWidget = widgetTester.widget<SvgPicture>(finder);
-      var loader = svgWidget.bytesLoader as SvgAssetLoader;
+      final svgWidget = widgetTester.widget<SvgPicture>(finder);
+      final loader = svgWidget.bytesLoader as SvgAssetLoader;
 
-      var svgCacheKey = loader.cacheKey(widgetTester.element(finder));
+      final svgCacheKey = loader.cacheKey(widgetTester.element(finder));
 
       expect(svgCacheKey.theme, testTheme);
     });

@@ -56,18 +56,23 @@ String generateAssets(
 ) {
   if (config.assets.isEmpty) {
     throw const InvalidSettingsException(
-        'The value of "flutter/assets:" is incorrect.');
+      'The value of "flutter/assets:" is incorrect.',
+    );
   }
 
   final importsBuffer = StringBuffer();
   final classesBuffer = StringBuffer();
 
   final integrations = <Integration>[
-    ImageIntegration(config.packageParameterLiteral,
-        parseMetadata: config.flutterGen.parseMetadata),
+    ImageIntegration(
+      config.packageParameterLiteral,
+      parseMetadata: config.flutterGen.parseMetadata,
+    ),
     if (config.flutterGen.integrations.flutterSvg)
-      SvgIntegration(config.packageParameterLiteral,
-          parseMetadata: config.flutterGen.parseMetadata),
+      SvgIntegration(
+        config.packageParameterLiteral,
+        parseMetadata: config.flutterGen.parseMetadata,
+      ),
     if (config.flutterGen.integrations.flareFlutter)
       FlareIntegration(config.packageParameterLiteral),
     if (config.flutterGen.integrations.rive)
@@ -242,13 +247,15 @@ List<FlavoredAsset> _getAssetRelativePathList(
     }
     final assetAbsolutePath = join(rootPath, tempAsset.path);
     if (FileSystemEntity.isDirectorySync(assetAbsolutePath)) {
-      assetRelativePathList.addAll(Directory(assetAbsolutePath)
-          .listSync()
-          .whereType<File>()
-          .map(
-            (e) => tempAsset.copyWith(path: relative(e.path, from: rootPath)),
-          )
-          .toList());
+      assetRelativePathList.addAll(
+        Directory(assetAbsolutePath)
+            .listSync()
+            .whereType<File>()
+            .map(
+              (e) => tempAsset.copyWith(path: relative(e.path, from: rootPath)),
+            )
+            .toList(),
+      );
     } else if (FileSystemEntity.isFileSync(assetAbsolutePath)) {
       assetRelativePathList.add(
         tempAsset.copyWith(path: relative(assetAbsolutePath, from: rootPath)),
@@ -414,15 +421,17 @@ String _dotDelimiterStyleDefinition(
         // Add this directory reference to Assets class
         // if we are not under the default asset folder
         if (dirname(assetType.path) == '.') {
-          assetsStaticStatements.add(_Statement(
-            type: className,
-            filePath: assetType.posixStylePath,
-            name: assetType.baseName.camelCase(),
-            value: '$className()',
-            isConstConstructor: true,
-            isDirectory: true,
-            needDartDoc: true,
-          ));
+          assetsStaticStatements.add(
+            _Statement(
+              type: className,
+              filePath: assetType.posixStylePath,
+              name: assetType.baseName.camelCase(),
+              value: '$className()',
+              isConstConstructor: true,
+              isDirectory: true,
+              needDartDoc: true,
+            ),
+          );
         }
       }
 
@@ -474,7 +483,7 @@ String _flatStyleDefinition(
     config.assets,
     config.exclude,
   );
-  paths.sort(((a, b) => a.path.compareTo(b.path)));
+  paths.sort((a, b) => a.path.compareTo(b.path));
   final statements = paths
       .map(
         (assetPath) => AssetType(
@@ -503,10 +512,13 @@ String _flatStyleAssetsClassDefinition(
   List<_Statement> statements,
   String? packageName,
 ) {
-  final statementsBlock =
-      statements.map((statement) => '''${statement.toDartDocString()}
+  final statementsBlock = statements
+      .map(
+        (statement) => '''${statement.toDartDocString()}
            ${statement.toStaticFieldString()}
-           ''').join('\n');
+           ''',
+      )
+      .join('\n');
   final valuesBlock = _assetValuesDefinition(statements, static: true);
   return _assetsClassDefinition(
     className,
@@ -539,7 +551,9 @@ String _assetValuesDefinition(
   bool static = false,
 }) {
   final values = statements.where((element) => !element.isDirectory);
-  if (values.isEmpty) return '';
+  if (values.isEmpty) {
+    return '';
+  }
   final names = values.map((value) => value.name).join(', ');
   final type = values.every((element) => element.type == values.first.type)
       ? values.first.type

@@ -14,7 +14,8 @@ String generateFonts(
 ) {
   if (fonts.isEmpty) {
     throw InvalidSettingsException(
-        'The value of "flutter/fonts:" is incorrect.');
+      'The value of "flutter/fonts:" is incorrect.',
+    );
   }
 
   final buffer = StringBuffer();

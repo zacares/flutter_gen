@@ -17,10 +17,12 @@ class Config {
 
 Config loadPubspecConfig(File pubspecFile) {
   stdout.writeln('$flutterGenVersion Loading ... '
-      '${normalize(join(
-    basename(pubspecFile.parent.path),
-    basename(pubspecFile.path),
-  ))}');
+      '${normalize(
+    join(
+      basename(pubspecFile.parent.path),
+      basename(pubspecFile.path),
+    ),
+  )}');
   final content = pubspecFile.readAsStringSync();
   final userMap = loadYaml(content) as Map?;
   final defaultMap = loadYaml(configDefaultYamlContent) as Map?;

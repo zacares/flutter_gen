@@ -112,10 +112,10 @@ ${isPackage ? "\n  static const String package = '$packageName';" : ''}
     }
     try {
       final absolutePath = p.join(type.rootPath, type.path);
-      String input = File(absolutePath).readAsStringSync();
+      final String input = File(absolutePath).readAsStringSync();
       final fileKeys = jsonDecode(input) as Map<String, dynamic>;
       if (lottieKeys.every(fileKeys.containsKey) && fileKeys['v'] != null) {
-        var version = Version.parse(fileKeys['v']);
+        final version = Version.parse(fileKeys['v']);
         // Lottie version 4.4.0 is the first version that supports BodyMovin.
         // https://github.com/xvrh/lottie-flutter/blob/0e7499d82ea1370b6acf023af570395bbb59b42f/lib/src/parser/lottie_composition_parser.dart#L60
         return version >= Version(4, 4, 0);

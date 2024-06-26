@@ -1,4 +1,3 @@
-@TestOn('vm')
 import 'dart:io';
 
 import 'package:flutter_gen_core/flutter_generator.dart';
@@ -71,12 +70,18 @@ void main() {
         colorsName: colors,
         fontsName: fonts,
       ).build();
-      expect(File('test_resources/lib/gen/$assets').readAsStringSync(),
-          isNotEmpty);
       expect(
-          File('test_resources/lib/gen/$fonts').readAsStringSync(), isNotEmpty);
-      expect(File('test_resources/lib/gen/$colors').readAsStringSync(),
-          isNotEmpty);
+        File('test_resources/lib/gen/$assets').readAsStringSync(),
+        isNotEmpty,
+      );
+      expect(
+        File('test_resources/lib/gen/$fonts').readAsStringSync(),
+        isNotEmpty,
+      );
+      expect(
+        File('test_resources/lib/gen/$colors').readAsStringSync(),
+        isNotEmpty,
+      );
     });
 
     test('Only flutter value', () async {
@@ -91,10 +96,14 @@ void main() {
         colorsName: colors,
         fontsName: fonts,
       ).build();
-      expect(File('test_resources/lib/gen/$assets').readAsStringSync(),
-          isNotEmpty);
       expect(
-          File('test_resources/lib/gen/$fonts').readAsStringSync(), isNotEmpty);
+        File('test_resources/lib/gen/$assets').readAsStringSync(),
+        isNotEmpty,
+      );
+      expect(
+        File('test_resources/lib/gen/$fonts').readAsStringSync(),
+        isNotEmpty,
+      );
       expect(File(colors).existsSync(), isFalse);
     });
 
@@ -112,8 +121,10 @@ void main() {
       ).build();
       expect(File(assets).existsSync(), isFalse);
       expect(File(fonts).existsSync(), isFalse);
-      expect(File('test_resources/lib/gen/$colors').readAsStringSync(),
-          isNotEmpty);
+      expect(
+        File('test_resources/lib/gen/$colors').readAsStringSync(),
+        isNotEmpty,
+      );
     });
 
     test('Change output path', () async {
@@ -129,12 +140,18 @@ void main() {
         fontsName: fonts,
       ).build();
 
-      expect(File('test_resources/lib/aaa/bbb/ccc/$assets').readAsStringSync(),
-          isNotEmpty);
-      expect(File('test_resources/lib/aaa/bbb/ccc/$colors').readAsStringSync(),
-          isNotEmpty);
-      expect(File('test_resources/lib/aaa/bbb/ccc/$fonts').readAsStringSync(),
-          isNotEmpty);
+      expect(
+        File('test_resources/lib/aaa/bbb/ccc/$assets').readAsStringSync(),
+        isNotEmpty,
+      );
+      expect(
+        File('test_resources/lib/aaa/bbb/ccc/$colors').readAsStringSync(),
+        isNotEmpty,
+      );
+      expect(
+        File('test_resources/lib/aaa/bbb/ccc/$fonts').readAsStringSync(),
+        isNotEmpty,
+      );
     });
 
     test('Empty output path', () async {
@@ -149,20 +166,29 @@ void main() {
         colorsName: colors,
         fontsName: fonts,
       ).build();
-      expect(File('test_resources/lib/gen/$assets').readAsStringSync(),
-          isNotEmpty);
       expect(
-          File('test_resources/lib/gen/$fonts').readAsStringSync(), isNotEmpty);
-      expect(File('test_resources/lib/gen/$colors').readAsStringSync(),
-          isNotEmpty);
+        File('test_resources/lib/gen/$assets').readAsStringSync(),
+        isNotEmpty,
+      );
+      expect(
+        File('test_resources/lib/gen/$fonts').readAsStringSync(),
+        isNotEmpty,
+      );
+      expect(
+        File('test_resources/lib/gen/$colors').readAsStringSync(),
+        isNotEmpty,
+      );
     });
 
     test('Wrong lineLength', () async {
       const pubspec = 'test_resources/pubspec_wrong_line_length.yaml';
 
-      expect(() {
-        return FlutterGenerator(File(pubspec)).build();
-      }, throwsA(isA<Exception>()));
+      expect(
+        () {
+          return FlutterGenerator(File(pubspec)).build();
+        },
+        throwsA(isA<Exception>()),
+      );
     });
 
     test('Disabled generation', () async {

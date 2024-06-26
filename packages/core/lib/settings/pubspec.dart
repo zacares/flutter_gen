@@ -1,12 +1,12 @@
+// NOTE: Run `melos gen:build_runner` after editing this file
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pubspec.g.dart';
 
-// NOTE: Run `melos gen:build_runner` after editing this file
-
 @JsonSerializable()
 class Pubspec {
-  Pubspec({
+  const Pubspec({
     required this.packageName,
     required this.flutterGen,
     required this.flutter,
@@ -26,33 +26,33 @@ class Pubspec {
 
 @JsonSerializable()
 class Flutter {
-  Flutter({
+  const Flutter({
     required this.assets,
     required this.fonts,
   });
+
+  factory Flutter.fromJson(Map json) => _$FlutterFromJson(json);
 
   @JsonKey(name: 'assets', required: true)
   final List<Object> assets;
 
   @JsonKey(name: 'fonts', required: true)
   final List<FlutterFonts> fonts;
-
-  factory Flutter.fromJson(Map json) => _$FlutterFromJson(json);
 }
 
 @JsonSerializable()
 class FlutterFonts {
-  FlutterFonts({required this.family});
+  const FlutterFonts({required this.family});
+
+  factory FlutterFonts.fromJson(Map json) => _$FlutterFontsFromJson(json);
 
   @JsonKey(name: 'family', required: true)
   final String family;
-
-  factory FlutterFonts.fromJson(Map json) => _$FlutterFontsFromJson(json);
 }
 
 @JsonSerializable()
 class FlutterGen {
-  FlutterGen({
+  const FlutterGen({
     required this.output,
     required this.lineLength,
     required this.parseMetadata,
@@ -61,6 +61,8 @@ class FlutterGen {
     required this.integrations,
     required this.colors,
   });
+
+  factory FlutterGen.fromJson(Map json) => _$FlutterGenFromJson(json);
 
   @JsonKey(name: 'output', required: true)
   final String output;
@@ -82,17 +84,18 @@ class FlutterGen {
 
   @JsonKey(name: 'colors', required: true)
   final FlutterGenColors colors;
-
-  factory FlutterGen.fromJson(Map json) => _$FlutterGenFromJson(json);
 }
 
 @JsonSerializable()
 class FlutterGenColors {
-  FlutterGenColors({
+  const FlutterGenColors({
     required this.enabled,
     required this.inputs,
     required this.outputs,
   });
+
+  factory FlutterGenColors.fromJson(Map json) =>
+      _$FlutterGenColorsFromJson(json);
 
   @JsonKey(name: 'enabled', required: true)
   final bool enabled;
@@ -102,20 +105,20 @@ class FlutterGenColors {
 
   @JsonKey(name: 'outputs', required: true)
   final FlutterGenElementOutputs outputs;
-
-  factory FlutterGenColors.fromJson(Map json) =>
-      _$FlutterGenColorsFromJson(json);
 }
 
 @JsonSerializable()
 class FlutterGenAssets {
-  FlutterGenAssets({
+  const FlutterGenAssets({
     required this.enabled,
     this.packageParameterEnabled,
     this.style,
     required this.outputs,
     required this.exclude,
   });
+
+  factory FlutterGenAssets.fromJson(Map json) =>
+      _$FlutterGenAssetsFromJson(json);
 
   @JsonKey(name: 'enabled', required: true)
   final bool enabled;
@@ -133,35 +136,35 @@ class FlutterGenAssets {
 
   @JsonKey(name: 'exclude', required: true)
   final List<String> exclude;
-
-  factory FlutterGenAssets.fromJson(Map json) =>
-      _$FlutterGenAssetsFromJson(json);
 }
 
 @JsonSerializable()
 class FlutterGenFonts {
-  FlutterGenFonts({
+  const FlutterGenFonts({
     required this.enabled,
     required this.outputs,
   });
+
+  factory FlutterGenFonts.fromJson(Map json) => _$FlutterGenFontsFromJson(json);
 
   @JsonKey(name: 'enabled', required: true)
   final bool enabled;
 
   @JsonKey(name: 'outputs', required: true)
   final FlutterGenElementOutputs outputs;
-
-  factory FlutterGenFonts.fromJson(Map json) => _$FlutterGenFontsFromJson(json);
 }
 
 @JsonSerializable()
 class FlutterGenIntegrations {
-  FlutterGenIntegrations({
+  const FlutterGenIntegrations({
     required this.flutterSvg,
     required this.flareFlutter,
     required this.rive,
     required this.lottie,
   });
+
+  factory FlutterGenIntegrations.fromJson(Map json) =>
+      _$FlutterGenIntegrationsFromJson(json);
 
   @JsonKey(name: 'flutter_svg', required: true)
   final bool flutterSvg;
@@ -174,42 +177,41 @@ class FlutterGenIntegrations {
 
   @JsonKey(name: 'lottie', required: true)
   final bool lottie;
-
-  factory FlutterGenIntegrations.fromJson(Map json) =>
-      _$FlutterGenIntegrationsFromJson(json);
 }
 
 @JsonSerializable()
 class FlutterGenElementOutputs {
-  FlutterGenElementOutputs({
+  const FlutterGenElementOutputs({
     required this.className,
   });
 
-  @JsonKey(name: 'class_name', required: true)
-  final String className;
-
   factory FlutterGenElementOutputs.fromJson(Map json) =>
       _$FlutterGenElementOutputsFromJson(json);
+
+  @JsonKey(name: 'class_name', required: true)
+  final String className;
 }
 
 @JsonSerializable()
 class FlutterGenElementAssetsOutputs extends FlutterGenElementOutputs {
-  static const String dotDelimiterStyle = 'dot-delimiter';
-  static const String snakeCaseStyle = 'snake-case';
-  static const String camelCaseStyle = 'camel-case';
-
-  FlutterGenElementAssetsOutputs({
+  const FlutterGenElementAssetsOutputs({
     required String className,
     required this.packageParameterEnabled,
     required this.directoryPathEnabled,
     required this.style,
-  }) : super(className: className) {
-    if (style != dotDelimiterStyle &&
-        style != snakeCaseStyle &&
-        style != camelCaseStyle) {
-      throw ArgumentError.value(style, 'style');
-    }
-  }
+  })  : assert(
+          style == dotDelimiterStyle ||
+              style == snakeCaseStyle ||
+              style == camelCaseStyle,
+        ),
+        super(className: className);
+
+  factory FlutterGenElementAssetsOutputs.fromJson(Map json) =>
+      _$FlutterGenElementAssetsOutputsFromJson(json);
+
+  static const String dotDelimiterStyle = 'dot-delimiter';
+  static const String snakeCaseStyle = 'snake-case';
+  static const String camelCaseStyle = 'camel-case';
 
   @JsonKey(name: 'package_parameter_enabled', defaultValue: false)
   final bool packageParameterEnabled;
@@ -225,7 +227,4 @@ class FlutterGenElementAssetsOutputs extends FlutterGenElementOutputs {
   bool get isSnakeCaseStyle => style == snakeCaseStyle;
 
   bool get isCamelCaseStyle => style == camelCaseStyle;
-
-  factory FlutterGenElementAssetsOutputs.fromJson(Map json) =>
-      _$FlutterGenElementAssetsOutputsFromJson(json);
 }

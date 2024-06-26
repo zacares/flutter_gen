@@ -8,7 +8,7 @@
 /// 3. Limited reserved words.
 /// 4. Reserved words, which can’t be identifiers.
 ///
-library identifer;
+library identifier;
 
 // 1. Contextual keywords, which have meaning only in specific places. They’re
 // valid identifiers everywhere.
@@ -42,7 +42,7 @@ const builtinKeywords = <String>{
   'sealed',
   'set',
   'static',
-  'typedef'
+  'typedef',
 };
 
 // 3. Limited reserved words. Can’t use as an identifier in any function body
@@ -83,7 +83,7 @@ const reservedKeywords = <String>{
   'void',
   'when',
   'while',
-  'with'
+  'with',
 };
 
 /// List of keywords that can't be used as identifiers.
@@ -96,24 +96,24 @@ const invalidIdentifiers = <String>{...asynchronyKeywords, ...reservedKeywords};
 /// combination of those characters plus digits.
 ///
 /// See https://dart.dev/language
-bool isValidVariableIdentifier(String identifer) =>
-    !invalidIdentifiers.contains(identifer) && isValidIdentifier(identifer);
+bool isValidVariableIdentifier(String identifier) =>
+    !invalidIdentifiers.contains(identifier) && isValidIdentifier(identifier);
 
 /// Returns true if this identifier is valid.
-bool isValidIdentifier(String identifer) =>
-    RegExp(r'^[A-Za-z_][A-Za-z0-9_]*$').hasMatch(identifer);
+bool isValidIdentifier(String identifier) =>
+    RegExp(r'^[A-Za-z_][A-Za-z0-9_]*$').hasMatch(identifier);
 
 /// Converts a string to a valid dart identifier. For example, by replacing
 /// invalid characters, and ensuring the string is prefixed with a letter or
 /// underscore.
-String convertToIdentifier(String identifer, {String prefix = 'a'}) {
+String convertToIdentifier(String identifier, {String prefix = 'a'}) {
   assert(isValidIdentifier(prefix));
 
   // The current implementation is a bit naive, but it works for now.
   // Consider replacing with a dart port of https://github.com/avian2/unidecode
-  identifer = identifer.replaceAll(RegExp(r'[^A-Za-z0-9_]'), '_');
-  if (!identifer.startsWith(RegExp(r'[A-Za-z]'))) {
-    identifer = '$prefix$identifer';
+  identifier = identifier.replaceAll(RegExp(r'[^A-Za-z0-9_]'), '_');
+  if (!identifier.startsWith(RegExp(r'[A-Za-z]'))) {
+    identifier = '$prefix$identifier';
   }
-  return identifer;
+  return identifier;
 }

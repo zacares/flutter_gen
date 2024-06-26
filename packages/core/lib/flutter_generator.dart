@@ -23,7 +23,9 @@ class FlutterGenerator {
 
   Future<void> build({Config? config, FileWriter? writer}) async {
     config ??= loadPubspecConfigOrNull(pubspecFile);
-    if (config == null) return;
+    if (config == null) {
+      return;
+    }
 
     final flutter = config.pubspec.flutter;
     final flutterGen = config.pubspec.flutterGen;

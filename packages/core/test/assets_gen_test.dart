@@ -1,4 +1,3 @@
-@TestOn('vm')
 import 'dart:io';
 
 import 'package:dart_style/dart_style.dart';
@@ -60,12 +59,19 @@ void main() {
       final pubspec = File('test_resources/pubspec_assets_no_list.yaml');
       final config = loadPubspecConfig(pubspec);
       final formatter = DartFormatter(
-          pageWidth: config.pubspec.flutterGen.lineLength, lineEnding: '\n');
+        pageWidth: config.pubspec.flutterGen.lineLength,
+        lineEnding: '\n',
+      );
 
-      expect(() {
-        return generateAssets(
-            AssetsGenConfig.fromConfig(pubspec, config), formatter);
-      }, throwsA(isA<InvalidSettingsException>()));
+      expect(
+        () {
+          return generateAssets(
+            AssetsGenConfig.fromConfig(pubspec, config),
+            formatter,
+          );
+        },
+        throwsA(isA<InvalidSettingsException>()),
+      );
     });
 
     test('Assets with package parameter enabled', () async {
@@ -151,7 +157,7 @@ void main() {
 
     test('Assets with terrible names (camelCase)', () async {
       // See [AssetTypeIterable.mapToUniqueAssetType] for the rules for picking
-      // identifer names.
+      // identifier names.
       final tests = <String, String>{
         'assets/single.jpg': 'single',
 
